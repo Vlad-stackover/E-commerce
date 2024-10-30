@@ -3,6 +3,8 @@ import cn from 'classnames';
 import { Inter } from 'next/font/google';
 
 
+export const dynamic = "force-dynamic"
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export default function AdminLayout({

@@ -7,12 +7,15 @@ import {
 } from "@/components/ui/card";
 import db from "@/db/db";
 import { formatCurrency, formatNumber } from "@/lib/formatters";
+import { resolve } from "path";
 
 async function getSalesData() {
     const data = await db.order.aggregate({
         _sum: { pricePaidInCents: true },
         _count: true
     })
+    
+
     return {
         amount: (data._sum.pricePaidInCents || 0) / 100,
         numberOfSales: data._count
@@ -43,7 +46,6 @@ async function getProductData(){
     
     return{ activeCount, inactiveCount }
 }
-
 
 export default async function AdminDashboard() {
     const [salesData, userData, productData] = await Promise.all([
