@@ -34,6 +34,7 @@ export async function addProduct(prevState: unknown, formData: FormData){
     await fs.writeFile(`public${imagePath}`, Buffer.from(await data.image.arrayBuffer()))
 
     await db.product.create({ data: {
+        isAvailableForPurchase: false,
         name: data.name,
         description: data.description,
         priceInCents: data.priceInCents,
