@@ -3,7 +3,10 @@ import { PageHeader } from "../_components/PageHeader";
 import Link from "next/link";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import db from "@/db/db";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, MoreVertical, XCircle } from "lucide-react";
+import { formatCurrency, formatNumber } from "@/lib/formatters";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { ActiveToggleDropdownItem, DeleteDropdownItem } from "./_components/ProductActions";
 
 export default function AdminProductsPage() {
     return (
@@ -27,9 +30,9 @@ async function ProductsTable() {
             id: true, name: true,
             priceInCents: true,
             isAvailableForPurchase: true,
-            _count: {select: { orders: true }}
+            _count: { select: { orders: true } }
         },
-        orderBy: { name: "asc"}
+        orderBy: { name: "asc" }
     })
 
     if (products.length === 0) return <p>No products found</p>
@@ -50,19 +53,46 @@ async function ProductsTable() {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {products.map(product => (
-                    <TableRow key={product.id}>
-                        <TableCell>
-                            {product.isAvailableForPurchase ? <>
-                            <CheckCircle2 />
-                            </>: (
-                                <>
-                                    <XCircle />
-                                </>
-                            )}
-                        </TableCell>
-                    </TableRow>
-                ))}
+                {products.map(product => {
+                    return (
+                        <TableRow key={product.id}>
+                            <TableCell>
+                                {product.isAvailableForPurchase ? (
+                                    <>
+                                        <CheckCircle2 />
+                                        <span className="sr-only">Available</span>
+                                    </>) : (
+                                    <>
+                                        <span className="sr-only">Unavailable</span>
+                                        <XCircle />
+                                    </>
+                                )}
+                            </TableCell>
+                            <TableCell>{product.name}</TableCell>
+                            <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>
+                            <TableCell>{formatNumber(product._count.orders)}</TableCell>
+                            <TableCell>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger>
+                                        <MoreVertical />
+                                        <span className="sr-only">Action</span>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                        <DropdownMenuItem asChild>
+                                            <a download href={`/admin/products/${product.id}/download`}>Download</a>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem asChild>
+                                            <Link href={`/admin/products/${product.id}/edit`}>Edit</Link>
+                                        </DropdownMenuItem>
+                                        <ActiveToggleDropdownItem id={product.id} 
+                                        isAvailableForPurchase={product.isAvailableForPurchase}/>
+                                        <DeleteDropdownItem id={product.id} disabled={product._count.orders > 0}/>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </TableCell>
+                        </TableRow>
+                    );
+                })}
             </TableBody>
         </Table>
     )
