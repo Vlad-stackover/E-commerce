@@ -64,7 +64,7 @@ async function ProductsTable() {
                                     </>) : (
                                     <>
                                         <span className="sr-only">Unavailable</span>
-                                        <XCircle />
+                                        <XCircle className="stroke-destructive" />
                                     </>
                                 )}
                             </TableCell>
@@ -73,21 +73,31 @@ async function ProductsTable() {
                             <TableCell>{formatNumber(product._count.orders)}</TableCell>
                             <TableCell>
                                 <DropdownMenu>
+
                                     <DropdownMenuTrigger>
                                         <MoreVertical />
                                         <span className="sr-only">Action</span>
                                     </DropdownMenuTrigger>
+
                                     <DropdownMenuContent>
+
                                         <DropdownMenuItem asChild>
-                                            <a download href={`/admin/products/${product.id}/download`}>Download</a>
+                                            <a download href={`/admin/products/${product.id}/download`}> Download </a>
                                         </DropdownMenuItem>
+
                                         <DropdownMenuItem asChild>
-                                            <Link href={`/admin/products/${product.id}/edit`}>Edit</Link>
+                                            <Link href={`/admin/products/${product.id}/edit`}> Edit </Link>
                                         </DropdownMenuItem>
+
                                         <ActiveToggleDropdownItem id={product.id} 
                                         isAvailableForPurchase={product.isAvailableForPurchase}/>
+
+                                        {/* <DropdownMenuSeparatot /> */}
+                                        
                                         <DeleteDropdownItem id={product.id} disabled={product._count.orders > 0}/>
+
                                     </DropdownMenuContent>
+
                                 </DropdownMenu>
                             </TableCell>
                         </TableRow>
