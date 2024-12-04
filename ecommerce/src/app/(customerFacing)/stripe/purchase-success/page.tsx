@@ -1,3 +1,3 @@
 export default function SuccessPage(){
-    return <h1>HI</h1>
+    return <h1>You purchased product</h1>
 }
