@@ -90,7 +90,9 @@ function DashboardCard({ title, subtitle, body }: DashboardCardProps) {
             </CardHeader>
 
             <CardContent>
-                <p>{body}</p>
+                {/* div inside paragraph cause error
+                <p>{body}</p> */}
+                {body}
             </CardContent>
         </Card>
     )
