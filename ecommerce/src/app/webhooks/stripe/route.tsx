@@ -45,10 +45,10 @@ export async function POST(req: NextRequest){
         await resend.emails.send({
             from: `Support <${process.env.SENDER_EMAIL}>`,
             to: email,
-            subject: 'Order Confirmation',
+            subject: "Order Confirmation",
             react: <h1>Hi</h1>,
         });
-
+        
         
     }
     return new NextResponse()
