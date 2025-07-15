@@ -16,6 +16,7 @@ export async function emailOrderHistory(
 
   if (result.success === false) {
     return { error: "Invalid email address" }
+  }
 
   const user = await db.user.findUnique({
     where: { email: result.data },
